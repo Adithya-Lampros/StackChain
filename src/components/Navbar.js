@@ -3,11 +3,17 @@ import { Link, useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
 import "../styles/Navbar/navbar.scss";
 import logo from "../components/stackchain.png";
+import { gaslessOnboarding } from "./onboard";
+
 const Navbar = ({ setOpenWalletOption }) => {
   const cookie = new Cookies();
   const [address, setAddress] = useState(cookie.get("account"));
   const location = useLocation();
   const [isNavExpanded, setIsNavExpanded] = useState(false);
+
+  const [walletAddress, setWalletAddress] = useState("");
+  const [gaslessWallet, setGaslessWallet] = useState({});
+  const [web3AuthProvider, setWeb3AuthProvider] = useState(null);
 
   useEffect(() => {
     const addr = cookie.get("account");
@@ -19,6 +25,28 @@ const Navbar = ({ setOpenWalletOption }) => {
   useEffect(() => {
     console.log(location.pathname);
   }, [location]);
+
+  const login = async () => {
+    try {
+      await gaslessOnboarding.init();
+      const provider = await gaslessOnboarding.login();
+      if (provider) {
+        setWeb3AuthProvider(provider);
+      }
+      if (web3AuthProvider) {
+        const gaslessWallet = gaslessOnboarding.getGaslessWallet();
+        if (!gaslessWallet.isInitiated()) {
+          await gaslessWallet.init();
+        }
+        const address = gaslessWallet.getAddress();
+        console.log(address);
+        setGaslessWallet(gaslessWallet);
+        setWalletAddress(address);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -109,6 +137,13 @@ const Navbar = ({ setOpenWalletOption }) => {
                   }}
                 >
                   Connect
+                </button>
+                <button
+                  onClick={() => {
+                    login();
+                  }}
+                >
+                  Login
                 </button>
               </li>
             )}

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import CryptoLoading from "./CryptoLoading";
 import DummyIMG from "./tile.png";
+import Coin from "./coin.jpg";
 
 const CryptoArticle = ({ account, mainContract }) => {
   const [isLoading, setLoading] = React.useState(true);
@@ -58,7 +59,7 @@ const CryptoArticle = ({ account, mainContract }) => {
                   return (
                     <div className="fakeimg">
                       {/* src={inde[0]} */}
-                      <img className="crypto-img" src={inde[0]} />
+                      <img className="crypto-img" src={Coin} />
                       <p>{inde[1]}</p>
                       <Link
                         className="all-user-link"

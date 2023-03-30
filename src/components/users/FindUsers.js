@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import LoadingAnimation from "./general-block/LoadingAnimation";
 import "./userstyle/finduser.scss";
 import useravtar from "./userstyle/user-avatar.png";
+import Logo from "./image.png";
 
 const FindUsers = ({ account, mainContract }) => {
   const [src, setsrc] = useState([]);
@@ -25,7 +26,6 @@ const FindUsers = ({ account, mainContract }) => {
       console.log("userimage" + userImage);
       src.push([name, score, noQuestions, noAnswers, id_array[i], userImage]);
       setImageUrl(userImage);
-      
     }
     setsrc(src);
     for (let i = 0; i < src.length; i++) {
@@ -101,7 +101,7 @@ const FindUsers = ({ account, mainContract }) => {
                       <div className="all-user-profile-image">
                         {console.log(inde[5])}
                         {/* src={inde[5]} */}
-                        <img src={inde[5]} alt="avatar" />
+                        <img src={Logo} alt="avatar" />
                       </div>
                       {console.log(inde[4])}
                       <div className="all-user-profile-right">

@@ -54,29 +54,31 @@ const AddArticle = ({ mainContract }) => {
 
     //------------------------------------------------------------------------------------------------------------------//
     const options = {
-      method: 'POST',
-      url: 'https://api.nftport.xyz/v0/metadata',
+      method: "POST",
+      url: "https://api.nftport.xyz/v0/metadata",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: '4455109c-4819-40f5-9ec5-5882af32a7ed'
+        "Content-Type": "application/json",
+        Authorization: "4455109c-4819-40f5-9ec5-5882af32a7ed",
       },
       data: {
         name: "'" + StringTitle + "'",
         description: "'" + editorRef.current.getContent() + "'",
         file_url: "'" + Stringtags + "'",
-        bhadresh: 'developer'
-      }
+        bhadresh: "developer",
+      },
     };
-    await axios.request(options).then(function (response) {
-      console.log(response.data);
-      // console.log(response.data.ipfs_url);
-      // imageUri = response.data.ipfs_url;
-    }).catch(function (error) {
-      console.error(error);
-    });
+    await axios
+      .request(options)
+      .then(function (response) {
+        console.log(response.data);
+        // console.log(response.data.ipfs_url);
+        // imageUri = response.data.ipfs_url;
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
 
     //------------------------------------------------------------------------------------------------------------------//
-
 
     // const { cid } = await client.add(JSON.stringify(question));
     // const articleCID = cid._baseCache.get("z");
@@ -106,7 +108,7 @@ const AddArticle = ({ mainContract }) => {
   }
 
   // function for uploading hero image
-  const client = create("https://ipfs.infura.io:5001/api/v0");
+
   const [uploadImage, setUploadedImage] = useState("No Image Found");
   const heroImage = useRef(null);
   function reset() {
@@ -117,15 +119,44 @@ const AddArticle = ({ mainContract }) => {
     console.log(file);
     setHeroImage(file);
 
-    try {
-      const added = await client.add(file);
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-      setUploadedImage(url);
-      console.log(url);
-      console.log(uploadImage);
-    } catch (error) {
-      console.log("Error uploading file: ", error);
-    }
+    const form = new FormData();
+    form.append("file", file);
+
+    const options = {
+      method: "POST",
+      url: "https://api.nftport.xyz/v0/files",
+      headers: {
+        "Content-Type":
+          "multipart/form-data; boundary=---011000010111000001101001",
+        Authorization: "3a00a5ae-f74a-4369-820d-8da1cc435690",
+      },
+      data: form,
+    };
+    console.log(options);
+    var imageUri;
+    await axios
+      .request(options)
+      .then(function (response) {
+        console.log(response.data);
+        console.log(response.data.ipfs_url);
+
+        imageUri = response.data.ipfs_url;
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+    console.log(imageUri);
+    setUploadedImage(imageUri);
+
+    // try {
+    //   const added = await client.add(file);
+    //   const url = `https://ipfs.io/ipfs/${added.path}`;
+    //   setUploadedImage(url);
+    //   console.log(url);
+    //   console.log(uploadImage);
+    // } catch (error) {
+    //   console.log("Error uploading file: ", error);
+    // }
   }
   return (
     <>

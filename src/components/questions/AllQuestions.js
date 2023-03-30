@@ -4,6 +4,7 @@ import "./AllQuestions.scss";
 import { useEffect } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
+import Img from "./image.png";
 
 function AllQuestions({ account, mainContract }) {
   const [count, setCount] = useState(0);
@@ -26,8 +27,7 @@ function AllQuestions({ account, mainContract }) {
       var url = "";
       if (question.q_cid.substring(0, 4) === "ipfs") {
         url = "https://ipfs.io/ipfs/" + question.q_cid.substring(7);
-      }
-      else {
+      } else {
         url = "https://ipfs.io/ipfs/" + question.q_cid;
       }
       await Axios.get(url).then((response) => {
@@ -92,7 +92,7 @@ function AllQuestions({ account, mainContract }) {
                 <div className="DisplayQuestions-askby">
                   <p>
                     <img
-                      src={inde[4]}
+                      src={Img}
                       alt=""
                       className="all-question-profile-img"
                     />
